@@ -6,6 +6,7 @@ public class User
     public string Email { get; set; } = "";
     public string PasswordHash { get; set; } = "";
     public string Role { get; set; } = "User";
+    public int Salary { get; set; }
     public int? age { get; set; }
     public string? gender { get; set; } = "";
 }
