@@ -1,0 +1,12 @@
+@model Product
+@{
+    ViewData["Title"] = "Delete product";
+}
+
+<h1>Delete product</h1>
+<p>Are you sure you want to delete <strong>@Model.Name</strong>?</p>
+
+<form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+    <button type="submit" class="btn btn-danger">Yes, delete</button>
+    <a class="btn btn-link" asp-action="Index">Cancel</a>
+</form>

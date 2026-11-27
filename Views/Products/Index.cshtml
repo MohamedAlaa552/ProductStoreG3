@@ -1,0 +1,77 @@
+@model ProductListViewModel
+@{
+    ViewData["Title"] = "Products";
+    var first = Model.Result.TotalCount == 0 ? 0 : (Model.Result.Page - 1) * Model.Result.PageSize + 1;
+    var last = first + Model.Result.Items.Count - (first == 0 ? 0 : 1);
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="mb-0">Products</h1>
+    @if (User.IsInRole("Admin"))
+    {
+        <a class="btn btn-primary" asp-action="Create">New product</a>
+    }
+</div>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-4">
+        <input name="Search" value="@Model.Query.Search" class="form-control" placeholder="Search by name" />
+    </div>
+    <div class="col-md-3">
+        <select name="CategoryId" asp-items="Model.Categories" class="form-select">
+            <option value="">All categories</option>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <select name="Sort" class="form-select">
+            <option value="" selected="@(string.IsNullOrEmpty(Model.Query.Sort))">Name</option>
+            <option value="price" selected="@(Model.Query.Sort == "price")">Price, low to high</option>
+            <option value="price_desc" selected="@(Model.Query.Sort == "price_desc")">Price, high to low</option>
+            <option value="stock" selected="@(Model.Query.Sort == "stock")">Stock, low to high</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-outline-primary w-100">Filter</button>
+    </div>
+</form>
+
+<table class="table table-striped align-middle">
+    <thead>
+        <tr><th></th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th></th></tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model.Result.Items)
+        {
+            <tr>
+                <td style="width:70px">
+                    @if (p.ImagePath is not null)
+                    {
+                        <img src="@p.ImagePath" alt="@p.Name" height="48" />
+                    }
+                </td>
+                <td>@p.Name</td>
+                <td>@p.Category?.Name</td>
+                <td>@p.Price</td>
+                <td>@p.Stock</td>
+                <td class="text-end">
+                    <a asp-action="Details" asp-route-id="@p.Id">Details</a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <span>|</span>
+                        <a asp-action="Edit" asp-route-id="@p.Id">Edit</a>
+                        <span>|</span>
+                        <a asp-action="Delete" asp-route-id="@p.Id">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+        @if (Model.Result.Items.Count == 0)
+        {
+            <tr><td colspan="6" class="text-center text-muted py-4">No products match your search.</td></tr>
+        }
+    </tbody>
+</table>
+
+<p class="text-muted">Showing @first to @last of @Model.Result.TotalCount</p>
+
+<partial name="_Pager" model="Model" />

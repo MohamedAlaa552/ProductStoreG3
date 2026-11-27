@@ -1,0 +1,16 @@
+@model Product
+
+<div class="card h-100">
+    @if (Model.ImagePath is not null)
+    {
+        <img src="@Model.ImagePath" class="card-img-top" alt="@Model.Name" style="height:160px;object-fit:cover" />
+    }
+    <div class="card-body">
+        <h5 class="card-title">@Model.Name</h5>
+        <p class="card-text mb-1">@Model.Price</p>
+        <p class="card-text text-muted">@(Model.Stock == 0 ? "Out of stock" : $"{Model.Stock} in stock")</p>
+    </div>
+    <div class="card-footer bg-transparent">
+        <a asp-controller="Products" asp-action="Details" asp-route-id="@Model.Id">Details</a>
+    </div>
+</div>

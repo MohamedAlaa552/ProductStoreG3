@@ -1,0 +1,21 @@
+@model LowStockViewModel
+
+<div class="card mb-4">
+    <div class="card-header">Low stock (under @Model.Threshold)</div>
+    @if (Model.Items.Count == 0)
+    {
+        <div class="card-body text-muted">Everything is well stocked.</div>
+    }
+    else
+    {
+        <ul class="list-group list-group-flush">
+            @foreach (var p in Model.Items)
+            {
+                <li class="list-group-item d-flex justify-content-between">
+                    <a asp-controller="Products" asp-action="Edit" asp-route-id="@p.Id">@p.Name</a>
+                    <span class="badge @(p.Stock == 0 ? "text-bg-danger" : "text-bg-warning")">@p.Stock</span>
+                </li>
+            }
+        </ul>
+    }
+</div>

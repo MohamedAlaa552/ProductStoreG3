@@ -1,0 +1,9 @@
+@{
+    ViewData["Title"] = "Home";
+}
+
+<h1>ProductStore</h1>
+<p>Products and categories stored in SQL Server with EF Core.</p>
+<a class="btn btn-primary mb-4" asp-controller="Products" asp-action="Index">Manage products</a>
+
+<vc:low-stock threshold="20" />

@@ -1,0 +1,21 @@
+@model ProductListViewModel
+
+@if (Model.Result.TotalPages > 1)
+{
+    <nav>
+        <ul class="pagination">
+            <li class="page-item @(Model.Result.HasPrevious ? "" : "disabled")">
+                <a class="page-link" asp-action="Index" asp-all-route-data="Model.RouteFor(Math.Max(Model.Result.Page - 1, 1))">Previous</a>
+            </li>
+            @for (var i = 1; i <= Model.Result.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.Result.Page ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-all-route-data="Model.RouteFor(i)">@i</a>
+                </li>
+            }
+            <li class="page-item @(Model.Result.HasNext ? "" : "disabled")">
+                <a class="page-link" asp-action="Index" asp-all-route-data="Model.RouteFor(Math.Min(Model.Result.Page + 1, Model.Result.TotalPages))">Next</a>
+            </li>
+        </ul>
+    </nav>
+}

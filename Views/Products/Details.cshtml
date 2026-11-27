@@ -1,0 +1,20 @@
+@model Product
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<h1>@Model.Name</h1>
+@if (Model.ImagePath is not null)
+{
+    <img src="@Model.ImagePath" alt="@Model.Name" class="img-thumbnail mb-3" style="max-height:240px" />
+}
+<p>Category: @Model.Category?.Name</p>
+<p>Price: @Model.Price</p>
+<p>In stock: @Model.Stock</p>
+
+@if (User.IsInRole("Admin"))
+{
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+    <span>|</span>
+}
+<a asp-action="Index">Back to the list</a>
